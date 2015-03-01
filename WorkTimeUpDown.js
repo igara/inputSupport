@@ -26,13 +26,12 @@ function mathRoundWorkTime(workTime) {
  * valueが設定されていない時の考慮あり
  */
 function getWorkTimeId() {
-	var getElementId = document.getElementById(document.activeElement.id);
-	if (String(getElementId.id).match(/^new_time_entry_\d*_\d*_hours/)) {
-		if (getElementId.value != "") {
-			return getElementId;
-		} else {
-			getElementId.setAttribute("value", "0");
+	if (String(document.activeElement.id).match(/^new_time_entry_\d*_\d*_hours/)) {
+		var getElementId = document.getElementById(document.activeElement.id);
+		if (getElementId.value == "") {
+			getElementId.value = 0;
 		}
+		return getElementId;
 	}
 }
 
@@ -44,7 +43,7 @@ function workTimeIncrement(workTime) {
 		alert("1日何時間？");
 	} else if (workTime.value <= 24 && workTime.value % 0.25 == 0) {
 		workTime.value = parseFloat(workTime.value) + parseFloat(0.25);
-	} else {
+	} else if (workTime.value <= 24 && workTime.value % 0.25 != 0) {
 		workTime.value = mathRoundWorkTime(workTime.value);
 	}
 }
@@ -56,8 +55,8 @@ function workTimeDecrement(workTime) {
 	if (workTime.value <= 0) {
 		alert("0より小さい");
 	} else if (workTime.value >= 0 && workTime.value % 0.25 == 0) {
-	    workTime.value = parseFloat(workTime.value) - parseFloat(0.25);
-	} else {
+		workTime.value = parseFloat(workTime.value) - parseFloat(0.25);
+	} else if (workTime.value >= 0 && workTime.value % 0.25 != 0) {
 		workTime.value = mathRoundWorkTime(workTime.value);
 	}
 }
